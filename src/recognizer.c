@@ -385,7 +385,6 @@ short marpaWrapperRecognizer_progressb(marpaWrapperRecognizer_t *marpaWrapperRec
   Marpa_Earley_Set_ID earleySetIdi;
   Marpa_Earley_Set_ID marpaEarleySetIdEndi;
   Marpa_Earley_Set_ID earleySetOrigIdi;
-  Marpa_Earleme       marpEarlemei;
   Marpa_Rule_ID       rulei;
   int                 realStarti = starti;
   int                 realEndi = endi;
@@ -431,13 +430,6 @@ short marpaWrapperRecognizer_progressb(marpaWrapperRecognizer_t *marpaWrapperRec
   marpaEarleySetIdEndi   = (Marpa_Earley_Set_ID) realEndi;
   nProgressl = 0;
   for (earleySetIdi = marpaEarleySetIdStarti; earleySetIdi <= marpaEarleySetIdEndi; earleySetIdi++) {
-
-    MARPAWRAPPER_TRACEF(genericLoggerp, funcs, "marpa_r_earleme(%p, %d)", marpaWrapperRecognizerp->marpaRecognizerp, (int) earleySetIdi);
-    marpEarlemei = marpa_r_earleme(marpaWrapperRecognizerp->marpaRecognizerp, earleySetIdi);
-    if (marpEarlemei < 0) {
-      MARPAWRAPPER_MARPA_G_ERROR(genericLoggerp, marpaWrapperRecognizerp->marpaWrapperGrammarp->marpaGrammarp);
-      goto err;
-    }
 
     MARPAWRAPPER_TRACEF(genericLoggerp, funcs, "marpa_r_progress_report_start(%p, %d)", marpaWrapperRecognizerp->marpaRecognizerp, (int) earleySetIdi);
     nbItemsi = marpa_r_progress_report_start(marpaWrapperRecognizerp->marpaRecognizerp, earleySetIdi);
