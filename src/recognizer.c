@@ -687,18 +687,14 @@ short marpaWrapperRecognizer_contextSetb(marpaWrapperRecognizer_t *marpaWrapperR
 /****************************************************************************/
 {
   MARPAWRAPPER_FUNCS(marpaWrapperRecognizer_contextSetb)
-#ifndef MARPAWRAPPER_NTRACE
   genericLogger_t       *genericLoggerp;
-#endif
 
   if (marpaWrapperRecognizerp == NULL) {
     errno = EINVAL;
     goto err;
   }
 
-#ifndef MARPAWRAPPER_NTRACE
-  genericLoggerp       = marpaWrapperRecognizerp->marpaWrapperRecognizerOption.genericLoggerp;
-#endif
+  genericLoggerp = marpaWrapperRecognizerp->marpaWrapperRecognizerOption.genericLoggerp;
 
   MARPAWRAPPER_TRACEF(genericLoggerp, funcs, "marpa_r_latest_earley_set_values_set(%p, %d, %p)", marpaWrapperRecognizerp->marpaRecognizerp, context.valuei, context.valuep);
   if (marpa_r_latest_earley_set_values_set(marpaWrapperRecognizerp->marpaRecognizerp, context.valuei, context.valuep) < 0) {
@@ -724,18 +720,14 @@ short marpaWrapperRecognizer_contextGetb(marpaWrapperRecognizer_t *marpaWrapperR
   Marpa_Earley_Set_ID    marpaLatestEarleySetIdi;
   int                    valuei;
   void                  *valuep;
-#ifndef MARPAWRAPPER_NTRACE
   genericLogger_t       *genericLoggerp;
-#endif
 
   if (marpaWrapperRecognizerp == NULL) {
     errno = EINVAL;
     goto err;
   }
 
-#ifndef MARPAWRAPPER_NTRACE
-  genericLoggerp       = marpaWrapperRecognizerp->marpaWrapperRecognizerOption.genericLoggerp;
-#endif
+  genericLoggerp = marpaWrapperRecognizerp->marpaWrapperRecognizerOption.genericLoggerp;
 
   /* This function always succeed as per doc */
   MARPAWRAPPER_TRACEF(genericLoggerp, funcs, "marpa_r_latest_earley_set(%p)", marpaWrapperRecognizerp->marpaRecognizerp);
@@ -811,18 +803,14 @@ short marpaWrapperRecognizer_earlemeb(marpaWrapperRecognizer_t *marpaWrapperReco
   int                    reali = i;
   Marpa_Earley_Set_ID    marpaLatestEarleySetIdi;
   Marpa_Earleme          earlemei;
-#ifndef MARPAWRAPPER_NTRACE
   genericLogger_t       *genericLoggerp;
-#endif
 
   if (marpaWrapperRecognizerp == NULL) {
     errno = EINVAL;
     goto err;
   }
 
-#ifndef MARPAWRAPPER_NTRACE
-  genericLoggerp       = marpaWrapperRecognizerp->marpaWrapperRecognizerOption.genericLoggerp;
-#endif
+  genericLoggerp = marpaWrapperRecognizerp->marpaWrapperRecognizerOption.genericLoggerp;
 
   /* This function always succeed as per doc */
   MARPAWRAPPER_TRACEF(genericLoggerp, funcs, "marpa_r_latest_earley_set(%p)", marpaWrapperRecognizerp->marpaRecognizerp);
