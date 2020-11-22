@@ -530,12 +530,10 @@ static short valueRuleCallback(void *userDatavp, int rulei, int arg0i, int argni
 {
   static const char           funcs[] = "valueRuleCallback";
   valueContext_t             *valueContextp           = (valueContext_t *) userDatavp;
-  marpaWrapperRecognizer_t   *marpaWrapperRecognizerp = valueContextp->marpaWrapperRecognizerp;
   marpaWrapperValue_t        *marpaWrapperValuep      = valueContextp->marpaWrapperValuep;
   marpaWrapperAsfValue_t     *marpaWrapperAsfValuep   = valueContextp->marpaWrapperAsfValuep;
   genericStack_t             *outputStackp            = valueContextp->outputStackp;
   genericLogger_t            *genericLoggerp          = valueContextp->genericLoggerp;
-  int                        *ruleip                  = valueContextp->ruleip;
   stackValueAndDescription_t *resultp                 = NULL;
   char                       *modes                   = marpaWrapperValuep ? "Value mode" : "Asf value mode";
   short                       rcb;
@@ -654,13 +652,11 @@ static short valueSymbolCallback(void *userDatavp, int symboli, int argi, int re
 {
   static const char           funcs[]                 = "valueSymbolCallback";
   valueContext_t             *valueContextp           = (valueContext_t *) userDatavp;
-  marpaWrapperRecognizer_t   *marpaWrapperRecognizerp = valueContextp->marpaWrapperRecognizerp;
   marpaWrapperValue_t        *marpaWrapperValuep      = valueContextp->marpaWrapperValuep;
   marpaWrapperAsfValue_t     *marpaWrapperAsfValuep   = valueContextp->marpaWrapperAsfValuep;
   genericStack_t             *inputStackp             = valueContextp->inputStackp;
   genericStack_t             *outputStackp            = valueContextp->outputStackp;
   genericLogger_t            *genericLoggerp          = valueContextp->genericLoggerp;
-  int                        *symbolip                = valueContextp->symbolip;
   stackValueAndDescription_t *resultp                 = NULL;
   char                       *modes                   = marpaWrapperValuep ? "Value mode" : "Asf value mode";
   short                       rcb;
