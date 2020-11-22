@@ -220,7 +220,7 @@ int main(int argc, char **argv) {
     int             i;
     GENERICLOGGER_INFO(traverseContext.genericLoggerp, "full traverser returns:");
 
-    stringStackp = GENERICSTACK_GET_PTR(traverseContext.outputStackp, valuei);
+    stringStackp = (genericStack_t *) GENERICSTACK_GET_PTR(traverseContext.outputStackp, valuei);
     for (i = 0; i < GENERICSTACK_USED(stringStackp); i++) {
       GENERICLOGGER_INFOF(traverseContext.genericLoggerp, "Indice %d:\n%s", i, GENERICSTACK_GET_PTR(stringStackp, i));
     }    
@@ -372,14 +372,14 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
     
     marpaWrapperAsf_traverse_rh_valueb(traverserp, 0, &spanIdi, NULL /* lengthip */);
     indicei     = spanIdi + 1; /* The spanId correspond to the inputstack indice spanId+1 */
-    tokenValues = GENERICSTACK_GET_PTR(traverseContextp->inputStackp, indicei);
+    tokenValues = (char *) GENERICSTACK_GET_PTR(traverseContextp->inputStackp, indicei);
 
     GENERICLOGGER_DEBUGF(genericLoggerp, "[%s][%d:%d] ... spanIdi=%d", funcs, ruleIdi, symbolIdi, spanIdi);
     GENERICLOGGER_DEBUGF(genericLoggerp, "[%s][%d:%d] ... Token is \"%s\"", funcs, ruleIdi, symbolIdi, tokenValues);
 
     /* We want to generate the string "(penntag literal)" */
     stringl = 1 + strlen(symbolNames) + 1 + strlen(tokenValues) + 1 + 1;
-    strings = malloc(stringl);
+    strings = (char *) malloc(stringl);
     sprintf(strings, "(%s %s)", symbolNames, tokenValues);
 
     /* We return a stack of string containing only one string */
@@ -416,16 +416,16 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
         GENERICSTACK_NEW(newResultStackp);
 
         for (i = 0; i < GENERICSTACK_USED(resultStackp); i++) {
-          genericStack_t *oldResultStackp = GENERICSTACK_GET_PTR(resultStackp, i);
+          genericStack_t *oldResultStackp = (genericStack_t *) GENERICSTACK_GET_PTR(resultStackp, i);
           int             childValuei;
           genericStack_t *childValueStackp;
           int             j;
 
 	  marpaWrapperAsf_traverse_rh_valueb(traverserp, rhIxi, &childValuei, NULL /* lengthip */);
-          childValueStackp = GENERICSTACK_GET_PTR(traverseContextp->outputStackp, (size_t) childValuei);
+          childValueStackp = (genericStack_t *) GENERICSTACK_GET_PTR(traverseContextp->outputStackp, (size_t) childValuei);
 
           for (j = 0; j < GENERICSTACK_USED(childValueStackp); j++) {
-            char           *newValues = GENERICSTACK_GET_PTR(childValueStackp, j);
+            char           *newValues = (char *) GENERICSTACK_GET_PTR(childValueStackp, j);
             int             k;
             genericStack_t *stackp;
 
@@ -440,7 +440,7 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
         }
 
         while (GENERICSTACK_USED(resultStackp) > 0) {
-          genericStack_t *stackp = GENERICSTACK_POP_PTR(resultStackp);
+          genericStack_t *stackp = (genericStack_t *) GENERICSTACK_POP_PTR(resultStackp);
           GENERICSTACK_FREE(stackp);
         }
         GENERICSTACK_FREE(resultStackp);
@@ -454,7 +454,7 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
         int i;
 
         for (i = 0; i < GENERICSTACK_USED(resultStackp); i++) {
-          genericStack_t *stackp = GENERICSTACK_GET_PTR(resultStackp, i);
+          genericStack_t *stackp = (genericStack_t *) GENERICSTACK_GET_PTR(resultStackp, i);
           int             j;
           size_t          stringl;
           char           *strings;
@@ -462,19 +462,19 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
           /* All rh values are concatenated */
           stringl = 0;
           for (j = 0; j < GENERICSTACK_USED(stackp); j++) {
-            char *values = GENERICSTACK_GET_PTR(stackp, j);
+            char *values = (char *) GENERICSTACK_GET_PTR(stackp, j);
             stringl += strlen(values);
           }
-          strings = malloc(++stringl); /* null character */
+          strings = (char *) malloc(++stringl); /* null character */
           strings[0] = '\0';
           for (j = 0; j < GENERICSTACK_USED(stackp); j++) {
-            char *values = GENERICSTACK_GET_PTR(stackp, j);
+            char *values = (char *) GENERICSTACK_GET_PTR(stackp, j);
             strcat(strings, values);
           }
           GENERICSTACK_PUSH_PTR(stringStackp, strings);
         }
         while (GENERICSTACK_USED(resultStackp) > 0) {
-          genericStack_t *stackp = GENERICSTACK_POP_PTR(resultStackp);
+          genericStack_t *stackp = (genericStack_t *) GENERICSTACK_POP_PTR(resultStackp);
           GENERICSTACK_FREE(stackp);
         }
         GENERICSTACK_FREE(resultStackp);
@@ -489,7 +489,7 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
         }
 
         for (i = 0; i < GENERICSTACK_USED(resultStackp); i++) {
-          genericStack_t *stackp = GENERICSTACK_GET_PTR(resultStackp, i);
+          genericStack_t *stackp = (genericStack_t *) GENERICSTACK_GET_PTR(resultStackp, i);
           int             j;
           size_t          stringl;
           char           *strings;
@@ -497,20 +497,20 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
           /* All rh values are concatenated and enclosed in "(penntag XXX)" */
           stringl = 1 + strlen(symbolNames) + 1;
           for (j = 0; j < GENERICSTACK_USED(stackp); j++) {
-            char *values = GENERICSTACK_GET_PTR(stackp, j);
+            char *values = (char *) GENERICSTACK_GET_PTR(stackp, j);
             if (j > 0) {
               stringl += strlen(joinWs);
             }
             stringl += strlen(values);
           }
           stringl++;
-          strings = malloc(++stringl); /* null character */
+          strings = (char *) malloc(++stringl); /* null character */
           strings[0] = '\0';
           strcat(strings, "(");
           strcat(strings, symbolNames);
           strcat(strings, " ");
           for (j = 0; j < GENERICSTACK_USED(stackp); j++) {
-            char *values = GENERICSTACK_GET_PTR(stackp, j);
+            char *values = (char *) GENERICSTACK_GET_PTR(stackp, j);
             if (j > 0) {
               strcat(strings, joinWs);
               stringl += strlen(joinWs);
@@ -521,7 +521,7 @@ static short full_traverserCallbacki(marpaWrapperAsfTraverser_t *traverserp, voi
           GENERICSTACK_PUSH_PTR(stringStackp, strings);
         }
         while (GENERICSTACK_USED(resultStackp) > 0) {
-          genericStack_t *stackp = GENERICSTACK_POP_PTR(resultStackp);
+          genericStack_t *stackp = (genericStack_t *) GENERICSTACK_POP_PTR(resultStackp);
           GENERICSTACK_FREE(stackp);
         }
         GENERICSTACK_FREE(resultStackp);
@@ -595,7 +595,7 @@ static void freeStringArrayStackv(genericStack_t *stringArrayStackp)
   if (! GENERICSTACK_ERROR(stringArrayStackp)) {
     for (i = 0; i < usedi; i++) {
       if (GENERICSTACK_IS_PTR(stringArrayStackp, i)) {
-	freeStringStackv(GENERICSTACK_GET_PTR(stringArrayStackp, i));
+	freeStringStackv((genericStack_t *) GENERICSTACK_GET_PTR(stringArrayStackp, i));
       }
     }
     GENERICSTACK_FREE(stringArrayStackp);

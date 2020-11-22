@@ -37,7 +37,7 @@ marpaWrapperRecognizer_t *marpaWrapperRecognizer_newp(marpaWrapperGrammar_t *mar
   genericLoggerp = marpaWrapperRecognizerOptionp->genericLoggerp;
 
   /* Create a recognizer instance */
-  marpaWrapperRecognizerp = malloc(sizeof(marpaWrapperRecognizer_t));
+  marpaWrapperRecognizerp = (marpaWrapperRecognizer_t *) malloc(sizeof(marpaWrapperRecognizer_t));
   if (marpaWrapperRecognizerp == NULL) {
     MARPAWRAPPER_ERRORF(genericLoggerp, "malloc failure: %s", strerror(errno));
     goto err;

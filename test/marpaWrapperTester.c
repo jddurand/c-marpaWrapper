@@ -437,7 +437,7 @@ int main(int argc, char **argv)
 				    valueRuleCallback,
 				    valueSymbolCallback,
 				    NULL) > 0) {
-      stackValueAndDescription_t *resultp = GENERICSTACK_GET_PTR(valueContext.outputStackp, 0);
+      stackValueAndDescription_t *resultp = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(valueContext.outputStackp, 0);
       GENERICLOGGER_INFOF(valueContext.genericLoggerp, "[Value mode] %s => %d", resultp->s, resultp->i);
     }
   }
@@ -467,7 +467,7 @@ int main(int argc, char **argv)
                                        valueSymbolCallback,
                                        NULL /* nullingCallbackp */
                                        ) > 0) {
-      stackValueAndDescription_t *resultp = GENERICSTACK_GET_PTR(valueContext.outputStackp, 0);
+      stackValueAndDescription_t *resultp = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(valueContext.outputStackp, 0);
       GENERICLOGGER_INFOF(valueContext.genericLoggerp, "[Asf value mode] %s => %d", resultp->s, resultp->i);
     }
   }
@@ -564,7 +564,7 @@ static short valueRuleCallback(void *userDatavp, int rulei, int arg0i, int argni
     goto err;
   }
 
-  resultp = malloc(sizeof(stackValueAndDescription_t));
+  resultp = (stackValueAndDescription_t *) malloc(sizeof(stackValueAndDescription_t));
   if (resultp == NULL) {
     GENERICLOGGER_ERRORF(genericLoggerp, "malloc error, %s", strerror(errno));
     goto err;
@@ -573,7 +573,7 @@ static short valueRuleCallback(void *userDatavp, int rulei, int arg0i, int argni
   switch (rulei) {
   case START_RULE:
     {
-      stackValueAndDescription_t *varp = GENERICSTACK_GET_PTR(outputStackp, arg0i);
+      stackValueAndDescription_t *varp = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(outputStackp, arg0i);
 
       *resultp = *varp;
       GENERICLOGGER_TRACEF(genericLoggerp, "[%s][%s] START_RULE: {s=%s,i=%d} at output stack No %d -> {s=%s,i=%d} at output stack No %d", modes, funcs, varp->s, varp->i, arg0i, resultp->s, resultp->i, resulti);
@@ -581,9 +581,9 @@ static short valueRuleCallback(void *userDatavp, int rulei, int arg0i, int argni
     break;
   case OP_RULE:
     {
-      stackValueAndDescription_t *var1p = GENERICSTACK_GET_PTR(outputStackp,  arg0i  );
+      stackValueAndDescription_t *var1p = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(outputStackp,  arg0i  );
       char                        var2c = GENERICSTACK_GET_CHAR(outputStackp, arg0i+1);
-      stackValueAndDescription_t *var3p = GENERICSTACK_GET_PTR(outputStackp,  arg0i+2);
+      stackValueAndDescription_t *var3p = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(outputStackp,  arg0i+2);
 
       sprintf(resultp->s, "(%s %c %s)", var1p->s, var2c, var3p->s);
       switch (var2c) {
@@ -611,7 +611,7 @@ static short valueRuleCallback(void *userDatavp, int rulei, int arg0i, int argni
     break;
   case NUMBER_RULE:
     {
-      stackValueAndDescription_t *varp = GENERICSTACK_GET_PTR(outputStackp, arg0i);
+      stackValueAndDescription_t *varp = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(outputStackp, arg0i);
 
       *resultp = *varp;
       GENERICLOGGER_TRACEF(genericLoggerp, "[%s][%s] START_RULE: {s=%s,i=%d} at output stack No %d -> {s=%s,i=%d} at output stack No %d", modes, funcs, varp->s, varp->i, arg0i, resultp->s, resultp->i, resulti);
@@ -708,7 +708,7 @@ static short valueSymbolCallback(void *userDatavp, int symboli, int argi, int re
     {
       int vari = GENERICSTACK_GET_INT(inputStackp, argi);
 
-      resultp = malloc(sizeof(stackValueAndDescription_t));
+      resultp = (stackValueAndDescription_t *) malloc(sizeof(stackValueAndDescription_t));
       if (resultp == NULL) {
 	GENERICLOGGER_ERRORF(genericLoggerp, "malloc error, %s", strerror(errno));
 	goto err;
@@ -802,7 +802,7 @@ static void dumpStacks(char *modes, valueContext_t *valueContextp)
       } else if (GENERICSTACK_IS_DOUBLE(outputStackp, i)) {
 	GENERICLOGGER_TRACEF(genericLoggerp, "[%s][%s] ... output stack No %d is DOUBLE", modes, funcs, i);
       } else if (GENERICSTACK_IS_PTR(outputStackp, i)) {
-	stackValueAndDescription_t *p = GENERICSTACK_GET_PTR(outputStackp, i);
+	stackValueAndDescription_t *p = (stackValueAndDescription_t *) GENERICSTACK_GET_PTR(outputStackp, i);
 	GENERICLOGGER_TRACEF(genericLoggerp, "[%s][%s] ... output stack No %d is PTR {\"%s\", %d}", modes, funcs, i, p->s, p->i);
       } else {
 	GENERICLOGGER_TRACEF(genericLoggerp, "[%s][%s] ... output stack No %d is ?????", modes, funcs, i);
