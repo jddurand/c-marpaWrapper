@@ -1827,15 +1827,22 @@ static inline marpaWrapperAsfGlade_t *_marpaWrapperAsf_glade_obtainp(marpaWrappe
   int                          symchRuleIdi;
   short                        findResult;
 
+#if MARPAWRAPPERASF_USE_REGISTERED_FLAG > 0
   if (MARPAWRAPPER_UNLIKELY((! GENERICSTACK_IS_PTR(gladeStackp, gladei))
                             || ((gladep = (marpaWrapperAsfGlade_t *) GENERICSTACK_GET_PTR(gladeStackp, gladei)) == NULL)
-#if MARPAWRAPPERASF_USE_REGISTERED_FLAG > 0
                             || (gladep->registeredb == 0)
-#endif
                             )) {
     MARPAWRAPPER_ERRORF(genericLoggerp, "Attempt to use an invalid glade, one whose ID is %d", gladei);
     goto err;
   }
+#else
+  if (MARPAWRAPPER_UNLIKELY((! GENERICSTACK_IS_PTR(gladeStackp, gladei))
+                            || ((gladep = (marpaWrapperAsfGlade_t *) GENERICSTACK_GET_PTR(gladeStackp, gladei)) == NULL)
+                            )) {
+    MARPAWRAPPER_ERRORF(genericLoggerp, "Attempt to use an invalid glade, one whose ID is %d", gladei);
+    goto err;
+  }
+#endif
 
   /* Return the glade if it is already set up */
   if (gladep->symchesStackp != NULL) {
