@@ -33,11 +33,6 @@ FOREACH (_target ${PROJECT_NAME} ${PROJECT_NAME}_static)
   FOREACH (_type MAJOR MICRO MINOR)
     TARGET_COMPILE_DEFINITIONS(${_target} PRIVATE -DMARPA_LIB_${_type}_VERSION=MARPA_${_type}_VERSION)
   ENDFOREACH ()
-  #
-  # genericStack optimization */
-  IF (C_INLINE)
-    TARGET_COMPILE_DEFINITIONS(${_target} PRIVATE -DGENERICSTACK_INLINE=${C_INLINE})
-  ENDIF ()
 ENDFOREACH ()
 
 ###############
