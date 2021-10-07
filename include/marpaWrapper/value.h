@@ -10,9 +10,9 @@ typedef struct marpaWrapperValue marpaWrapperValue_t;
 
 /* Callbacks */
 /* --------- */
-typedef short (*marpaWrapperValueRuleCallback_t)(void *userDatavp, int rulei, int arg0i, int argni, int resulti);
-typedef short (*marpaWrapperValueSymbolCallback_t)(void *userDatavp, int symboli, int argi, int resulti);
-typedef short (*marpaWrapperValueNullingCallback_t)(void *userDatavp, int symboli, int resulti);
+typedef short (*marpaWrapperValueRuleCallback_t)(void *userDatavp, int rulei, int arg0i, int argni, int resulti, int startEarleySetIdi, int endEarleySetIdi);
+typedef short (*marpaWrapperValueSymbolCallback_t)(void *userDatavp, int symboli, int argi, int resulti, int startEarleySetIdi, int endEarleySetIdi);
+typedef short (*marpaWrapperValueNullingCallback_t)(void *userDatavp, int symboli, int resulti, int startEarleySetIdi, int endEarleySetIdi);
 
 /* --------------- */
 /* General options */

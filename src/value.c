@@ -181,18 +181,20 @@ short marpaWrapperValue_valueb(marpaWrapperValue_t               *marpaWrapperVa
 {
   /* We take much care to set marpaWrapperValuep->marpaValuep only around the callbacks */
   MARPAWRAPPER_FUNCS(marpaWrapperValue_valueb)
-  int               tnexti;
-  Marpa_Value       marpaValuep = NULL;
-  int               nexti;
-  Marpa_Step_Type   stepi;
-  Marpa_Rule_ID     marpaRuleIdi;
-  Marpa_Symbol_ID   marpaSymbolIdi;
-  int               argFirsti;
-  int               argLasti;
-  int               argResulti;
-  int               tokenValuei;
-  int               nParsesi;
-  short             callbackb;
+  int                 tnexti;
+  Marpa_Value         marpaValuep = NULL;
+  int                 nexti;
+  Marpa_Step_Type     stepi;
+  Marpa_Rule_ID       marpaRuleIdi;
+  Marpa_Symbol_ID     marpaSymbolIdi;
+  int                 argFirsti;
+  int                 argLasti;
+  int                 argResulti;
+  int                 tokenValuei;
+  int                 nParsesi;
+  short               callbackb;
+  Marpa_Earley_Set_ID startEarleySetIdi;
+  Marpa_Earley_Set_ID endEarleySetIdi;
 
 #ifndef NDEBUG
   if (MARPAWRAPPER_UNLIKELY(marpaWrapperValuep == NULL)) {
@@ -258,11 +260,17 @@ short marpaWrapperValue_valueb(marpaWrapperValue_t               *marpaWrapperVa
       MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_result(%p)", marpaValuep);
       argResulti = marpa_v_result(marpaValuep);
 
+      MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_rule_start_es_id(%p)", marpaValuep);
+      startEarleySetIdi = marpa_v_rule_start_es_id(marpaValuep);
+
+      MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_es_id(%p)", marpaValuep);
+      endEarleySetIdi = marpa_v_es_id(marpaValuep);
+
       MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "Rule %d: Stack [%d..%d] -> Stack %d", (int) marpaRuleIdi, argFirsti, argLasti, argResulti);
 
       if (ruleCallbackp != NULL) {
         marpaWrapperValuep->marpaValuep = marpaValuep;
-	callbackb = ruleCallbackp(userDatavp, (int) marpaRuleIdi, argFirsti, argLasti, argResulti);
+	callbackb = ruleCallbackp(userDatavp, (int) marpaRuleIdi, argFirsti, argLasti, argResulti, startEarleySetIdi, endEarleySetIdi);
         marpaWrapperValuep->marpaValuep = NULL;
         if (callbackb == 0) {
 	  MARPAWRAPPER_ERRORF(GENERICLOGGERP(marpaWrapperValuep), "Rule No %d value callback failure", (int) marpaRuleIdi);
@@ -282,11 +290,17 @@ short marpaWrapperValue_valueb(marpaWrapperValue_t               *marpaWrapperVa
       MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_result(%p)", marpaValuep);
       argResulti = marpa_v_result(marpaValuep);
 
+      MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_token_start_es_id(%p)", marpaValuep);
+      startEarleySetIdi = marpa_v_token_start_es_id(marpaValuep);
+
+      MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_es_id(%p)", marpaValuep);
+      endEarleySetIdi = marpa_v_es_id(marpaValuep);
+
       MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "Symbol %d: Stack %d -> Stack %d", (int) marpaSymbolIdi, tokenValuei, argResulti);
 
       if (symbolCallbackp != NULL) {
         marpaWrapperValuep->marpaValuep = marpaValuep;
-	callbackb = symbolCallbackp(userDatavp, (int) marpaSymbolIdi, tokenValuei, argResulti);
+	callbackb = symbolCallbackp(userDatavp, (int) marpaSymbolIdi, tokenValuei, argResulti, startEarleySetIdi, endEarleySetIdi);
         marpaWrapperValuep->marpaValuep = NULL;
         if (callbackb == 0) {
 	  MARPAWRAPPER_ERRORF(GENERICLOGGERP(marpaWrapperValuep), "Symbol No %d value callback failure", (int) marpaSymbolIdi);
@@ -303,11 +317,17 @@ short marpaWrapperValue_valueb(marpaWrapperValue_t               *marpaWrapperVa
       MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_result(%p)", marpaValuep);
       argResulti = marpa_v_result(marpaValuep);
 
+      MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_token_start_es_id(%p)", marpaValuep);
+      startEarleySetIdi = marpa_v_token_start_es_id(marpaValuep);
+
+      MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "marpa_v_es_id(%p)", marpaValuep);
+      endEarleySetIdi = marpa_v_es_id(marpaValuep);
+
       MARPAWRAPPER_TRACEF(GENERICLOGGERP(marpaWrapperValuep), funcs, "Nulling symbol %d-> Stack %d", (int) marpaSymbolIdi, argResulti);
 
       if (nullingCallbackp != NULL) {
         marpaWrapperValuep->marpaValuep = marpaValuep;
-	callbackb = nullingCallbackp(userDatavp, (int) marpaSymbolIdi, argResulti);
+	callbackb = nullingCallbackp(userDatavp, (int) marpaSymbolIdi, argResulti, startEarleySetIdi, endEarleySetIdi);
         marpaWrapperValuep->marpaValuep = NULL;
         if (callbackb == 0) {
 	  MARPAWRAPPER_ERRORF(GENERICLOGGERP(marpaWrapperValuep), "Nulling symbol No %d value callback failure", (int) marpaSymbolIdi);
