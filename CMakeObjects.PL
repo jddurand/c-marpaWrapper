@@ -225,6 +225,7 @@ sub try_compile {
             $cbuilder->link_executable(
                 objects              => [ $obj ],
                 );
+        }
         $rc = 1;
     };
     unlink $fh->filename;
