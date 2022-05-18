@@ -231,9 +231,11 @@ short marpaWrapperRecognizer_latestb(marpaWrapperRecognizer_t *marpaWrapperRecog
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 1");
   return 1;
 
+#ifndef NDEBUG
  err:
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 0");
   return 0;
+#endif
 }
 
 /****************************************************************************/
@@ -388,9 +390,11 @@ short marpaWrapperRecognizer_exhaustedb(marpaWrapperRecognizer_t *marpaWrapperRe
   }
   return 1;
 
+#ifndef NDEBUG
  err:
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 0");
   return 0;
+#endif
 }
 
 /****************************************************************************/
@@ -793,9 +797,11 @@ short marpaWrapperRecognizer_currentEarlemeb(marpaWrapperRecognizer_t *marpaWrap
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 1");
   return 1;
 
+#ifndef NDEBUG
  err:
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 0");
   return 0;
+#endif
 }
 
 /****************************************************************************/
@@ -870,7 +876,9 @@ short marpaWrapperRecognizer_furthestEarlemeb(marpaWrapperRecognizer_t *marpaWra
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 1");
   return 1;
 
+#ifndef NDEBUG
  err:
   MARPAWRAPPER_TRACE(GENERICLOGGERP(marpaWrapperRecognizerp), funcs, "return 0");
   return 0;
+#endif
 }
