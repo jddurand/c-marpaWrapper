@@ -1,4 +1,4 @@
-# Copyright 2018 Jeffrey Kegler
+# Copyright 2022 Jeffrey Kegler
 # This file is part of Marpa::R2.  Marpa::R2 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
@@ -12,6 +12,13 @@
 # You should have received a copy of the GNU Lesser
 # General Public License along with Marpa::R2.  If not, see
 # http://www.gnu.org/licenses/.
+
+THIS PROCEDURE IS OBSOLETE.  I am keeping this note in the repo, becuase
+it still has reference value.
+
+IMPORTANT NOTE:  This method assumes the both the library and Marpa::R2
+were compiled with the same headers.  In particular, marpa.h, the Libmarpa
+public header must be the same.
 
 This document describes how to link an external shared library with
 Marpa::R2.  This method, and this document, are intended for re-packagers
