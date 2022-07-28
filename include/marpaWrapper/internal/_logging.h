@@ -4,7 +4,9 @@
 #include <stddef.h>
 #include <genericLogger.h>
 #include "marpa.h"
+#ifndef MARPAWRAPPER_AMALGAMATION
 #include "marpa_codes.h"
+#endif
 
 extern const struct marpa_error_description_s marpa_error_description[];
 extern const struct marpa_event_description_s marpa_event_description[];

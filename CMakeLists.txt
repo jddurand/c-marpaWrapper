@@ -20,11 +20,19 @@ SET (MARPA__R2_LIBRARY_TARGET "marpa")
 # Library definition #
 ######################
 FILE (GLOB lib_marpa_src "${MARPA__R2_DIR}/cpan/engine/read_only/*.c")
-FILE (GLOB lib_src src/internal/*.c src/*.c)
+FILE (GLOB lib_src src/*.c)
+
+##############################################################################################
+# For performance reason (compiler optimization of unit) we want everything in a single file #
+##############################################################################################
+
 MYPACKAGELIBRARY(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/config.h.in
   ${INCLUDE_OUTPUT_PATH}/config.h
-  ${lib_src} ${lib_marpa_src})
+  amalgamation/marpaWrapper.c
+  # ${lib_src}
+  # ${lib_marpa_src}
+  )
 #
 # Because of Marpa, the cmake framework does not know about it
 #

@@ -160,21 +160,23 @@ foreach (qw/genericLogger genericStack genericHash genericSparseArray/) {
     push(@additional_includes, $inc) if (-d $inc);
 }
 
-# ----------------
-# Get source files
-# ----------------
-my @sources;
-find(
-    {
-	no_chdir => 1,
-	wanted => sub {
-	    my $file = File::Spec->canonpath($_);
-	    if (-f $file && ($file =~ /\.c$/ || $file =~ /\.cpp$/)) {
-		push(@sources, $file)
-	    }
-	},
-    },
-    'src', @additional_srcdir);
+# ----------------------------------------------
+# Get source files: we use the amalgamation file
+# ----------------------------------------------
+my @sources = File::Spec->catfile('amalgamation', 'marpaWrapper.c');
+if (0) {
+    find(
+        {
+            no_chdir => 1,
+            wanted => sub {
+                my $file = File::Spec->canonpath($_);
+                if (-f $file && ($file =~ /\.c$/ || $file =~ /\.cpp$/)) {
+                    push(@sources, $file)
+                }
+            },
+        },
+        'src', @additional_srcdir);
+}
 
 # ----------------------------------------------------------------------------------------
 # Generate objects
