@@ -1,7 +1,7 @@
 ; DO NOT EDIT DIRECTLY.
 ; This file was automatically generated.
 ; This file is for the Microsoft linker.
-; Fri Jul 29 07:09:47 2022
+; Fri Jul 29 20:10:11 2022
 EXPORTS
    marpa_check_version
    marpa_version
@@ -77,8 +77,8 @@ EXPORTS
    marpa_o_unref
    marpa_o_ambiguity_metric
    marpa_o_is_null
-   marpa_o_high_rank_only_set
    marpa_o_high_rank_only
+   marpa_o_high_rank_only_set
    marpa_o_rank
    marpa_t_new
    marpa_t_ref
