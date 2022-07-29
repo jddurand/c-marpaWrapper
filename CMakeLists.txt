@@ -4,24 +4,6 @@ IF (NOT MYPACKAGEBOOTSTRAP_DONE)
 ENDIF ()
 MYPACKAGESTART (marpaWrapper 1 0 96)
 
-####################
-# libmarpa sources #
-####################
-EXECUTE_PROCESS(
-  COMMAND "${CMAKE_COMMAND}" -E copy_directory "${PROJECT_SOURCE_DIR}/3rdparty/github/Marpa--R2" "${3RDPARTY_OUTPUT_PATH}/Marpa--R2"
-  WORKING_DIRECTORY "${3RDPARTY_OUTPUT_PATH}"
-  )
-SET (MARPA__R2_FOUND TRUE)
-SET (MARPA__R2_DIR            "${3RDPARTY_OUTPUT_PATH}/Marpa--R2")
-SET (MARPA__R2_INCLUDE_DIR    "${MARPA__R2_DIR}")
-SET (MARPA__R2_LIBRARY_TARGET "marpa")
-
-######################
-# Library definition #
-######################
-FILE (GLOB lib_marpa_src "${MARPA__R2_DIR}/cpan/engine/read_only/*.c")
-FILE (GLOB lib_src src/*.c)
-
 ##############################################################################################
 # For performance reason (compiler optimization of unit) we want everything in a single file #
 ##############################################################################################
@@ -29,15 +11,12 @@ FILE (GLOB lib_src src/*.c)
 MYPACKAGELIBRARY(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/config.h.in
   ${INCLUDE_OUTPUT_PATH}/config.h
-  amalgamation/marpaWrapper.c
-  # ${lib_src}
-  # ${lib_marpa_src}
-  )
+  amalgamation/marpaWrapper.c)
 #
 # Because of Marpa, the cmake framework does not know about it
 #
 FOREACH (_target ${PROJECT_NAME} ${PROJECT_NAME}_static)
-  TARGET_INCLUDE_DIRECTORIES(${_target} PRIVATE ${MARPA__R2_DIR}/cpan/engine/read_only)
+  TARGET_INCLUDE_DIRECTORIES(${_target} PRIVATE libmarpa/work/stage)
   FOREACH (_type MAJOR MICRO MINOR)
     TARGET_COMPILE_DEFINITIONS(${_target} PRIVATE -DMARPA_LIB_${_type}_VERSION=MARPA_${_type}_VERSION)
   ENDFOREACH ()
