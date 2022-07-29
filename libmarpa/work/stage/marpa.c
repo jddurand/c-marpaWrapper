@@ -12081,10 +12081,10 @@ const ZWAID zwaid= Item_of_CIL(zwa_cil,cil_ix);
 const ZWA zwa= RZWA_by_ID(zwaid);
 
 
-MARPA_OFF_DEBUG3("At %s, evaluating assertion %ld",STRLOC,(long)zwaid);
+MARPA_OFF_DEBUG3("At %s, evaluating assertion %ld",STRLOC,(long)zwaid)
 if(Memo_YSID_of_ZWA(zwa)==ysid){
 if(Memo_Value_of_ZWA(zwa))continue;
-MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld",STRLOC,(long)zwaid);
+MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld",STRLOC,(long)zwaid)
 return 0;
 }
 
@@ -12099,11 +12099,11 @@ Memo_YSID_of_ZWA(zwa)= ysid;
 
 
 if(!value){
-MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld",STRLOC,(long)zwaid);
+MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld",STRLOC,(long)zwaid)
 return 0;
 }
 
-MARPA_OFF_DEBUG3("At %s: value is 1 for assertion %ld",STRLOC,(long)zwaid);
+MARPA_OFF_DEBUG3("At %s: value is 1 for assertion %ld",STRLOC,(long)zwaid)
 }
 return 1;
 }
@@ -13948,8 +13948,8 @@ return failure_indicator;
 }
 earley_set= YS_of_R_by_Ord(r,set_id);
 
-MARPA_OFF_DEBUG3("At %s, starting progress report Earley set %ld",
-STRLOC,(long)set_id);
+MARPA_OFF_DEBUG3("At %s, starting progress report Earley set %ld"
+STRLOC,(long)set_id)
 
 /*826:*/
 #line 9615 "marpa.w"
@@ -13979,7 +13979,7 @@ if(!YIM_is_Active(earley_item))continue;
 {
 SRCL leo_source_link= NULL;
 
-MARPA_OFF_DEBUG2("At %s, Do the progress report",STRLOC);
+MARPA_OFF_DEBUG2("At %s, Do the progress report",STRLOC)
 
 progress_report_items_insert(report_tree,AHM_of_YIM(earley_item),
 earley_item);
@@ -13987,11 +13987,11 @@ for(leo_source_link= First_Leo_SRCL_of_YIM(earley_item);
 leo_source_link;leo_source_link= Next_SRCL_of_SRCL(leo_source_link))
 {
 LIM leo_item;
-MARPA_OFF_DEBUG3("At %s, Leo source link %p",STRLOC,leo_source_link);
+MARPA_OFF_DEBUG3("At %s, Leo source link %p",STRLOC,leo_source_link)
 
 if(!SRCL_is_Active(leo_source_link))continue;
 
-MARPA_OFF_DEBUG3("At %s, active Leo source link %p",STRLOC,leo_source_link);
+MARPA_OFF_DEBUG3("At %s, active Leo source link %p",STRLOC,leo_source_link)
 
 
 
@@ -14005,7 +14005,7 @@ progress_report_items_insert(report_tree,trailhead_ahm,
 trailhead_yim);
 }
 
-MARPA_OFF_DEBUG3("At %s, finished Leo source link %p",STRLOC,leo_source_link);
+MARPA_OFF_DEBUG3("At %s, finished Leo source link %p",STRLOC,leo_source_link)
 }
 }
 
@@ -14092,7 +14092,7 @@ const XRL source_xrl= XRL_of_AHM(report_ahm);
 
 MARPA_OFF_DEBUG5(
 "%s Calling progress_report_items_insert(%p, %p, %p)",
-STRLOC,report_tree,report_ahm,origin_yim);
+STRLOC,report_tree,report_ahm,origin_yim)
 
 if(!source_xrl)return;
 
@@ -14109,13 +14109,13 @@ PROGRESS new_report_item=
 marpa_obs_new(MARPA_AVL_OBSTACK(report_tree),
 struct marpa_progress_item,1);
 
-MARPA_OFF_DEBUG2("%s, === Adding report item ===",STRLOC);
-MARPA_OFF_DEBUG3("%s, report irl = %d",STRLOC,IRLID_of_AHM(report_ahm));
-MARPA_OFF_DEBUG3("%s, report irl position = %d",STRLOC,Position_of_AHM(report_ahm));
+MARPA_OFF_DEBUG2("%s, === Adding report item ===",STRLOC)
+MARPA_OFF_DEBUG3("%s, report irl = %d",STRLOC,IRLID_of_AHM(report_ahm))
+MARPA_OFF_DEBUG3("%s, report irl position = %d",STRLOC,Position_of_AHM(report_ahm))
 
-MARPA_OFF_DEBUG3("%s, xrl = %d",STRLOC,ID_of_XRL(source_xrl));
-MARPA_OFF_DEBUG3("%s, xrl dot = %d",STRLOC,XRL_Position_of_AHM(report_ahm));
-MARPA_OFF_DEBUG3("%s, origin ord = %d",STRLOC,Origin_Ord_of_YIM(origin_yim));
+MARPA_OFF_DEBUG3("%s, xrl = %d",STRLOC,ID_of_XRL(source_xrl))
+MARPA_OFF_DEBUG3("%s, xrl dot = %d",STRLOC,XRL_Position_of_AHM(report_ahm))
+MARPA_OFF_DEBUG3("%s, origin ord = %d",STRLOC,Origin_Ord_of_YIM(origin_yim))
 
 Position_of_PROGRESS(new_report_item)= xrl_position;
 Origin_of_PROGRESS(new_report_item)= origin_of_xrl;
@@ -16712,7 +16712,7 @@ is_first_tree_attempt= 0;
 #line 12328 "marpa.w"
 
 {
-MARPA_OFF_DEBUG1("Initialize tree");
+MARPA_OFF_DEBUG1("Initialize tree")
 ORID root_or_id= Top_ORID_of_B(b);
 OR root_or_node= OR_of_B_by_ID(b,root_or_id);
 NOOK nook;
@@ -16791,7 +16791,7 @@ if(Size_of_T(t)<=0)goto TREE_IS_EXHAUSTED;
 {
 {
 const int stack_length= Size_of_T(t);
-MARPA_OFF_DEBUG2("Finishing tree, size = %ld",(long)stack_length);
+MARPA_OFF_DEBUG2("Finishing tree, size = %ld",(long)stack_length)
 int i;
 
 
