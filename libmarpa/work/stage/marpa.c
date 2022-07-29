@@ -13948,7 +13948,7 @@ return failure_indicator;
 }
 earley_set= YS_of_R_by_Ord(r,set_id);
 
-MARPA_OFF_DEBUG3("At %s, starting progress report Earley set %ld"
+MARPA_OFF_DEBUG3("At %s, starting progress report Earley set %ld",
 STRLOC,(long)set_id)
 
 /*826:*/
