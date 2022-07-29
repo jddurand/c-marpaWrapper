@@ -264,8 +264,7 @@ typedef unsigned int BITFIELD;
 # define alignof(type) (__alignof__(type))
 #else
 #line 476 "marpa_ami.w"
-# define alignof(type) (offsetof (struct { char __slot1; type __slot2; }, 
-__slot2))
+# define alignof(type) (offsetof (struct { char __slot1; type __slot2; }, __slot2))
 #endif
 #line 479 "marpa_ami.w"
 
