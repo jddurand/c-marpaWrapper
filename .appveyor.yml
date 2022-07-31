@@ -2,7 +2,6 @@ shallow_clone: true  # For GitHub abd BitBucket
 clone_depth: 100     # For other git providers
 
 # -------------------------------------------------------------------------------------------------------------------
-# The important thing is to know what AppVeyor images hosts what. As of 11-oct-2019:
 #
 #  Image              "Visual Studio 2013"     "Visual Studio 2015"         "Visual Studio 2017" "Visual Studio 2019" "Visual Studio 2022"
 #  CMake               C.f. https://www.appveyor.com/docs/windows-images-software/
