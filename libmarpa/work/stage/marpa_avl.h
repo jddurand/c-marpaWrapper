@@ -29,7 +29,189 @@
 
 #include <stddef.h>
 
-/* C standard keywords only should be used for linkage, i.e. static or online */
+/* Most use avl methods are insert and find.                    */
+/* Because of the function pointer dereference of tavl_compare  */
+/* Compilers cannot avoid jump calls, that have a visible cost. */
+/* The following macros exhibit explicitly the comparison       */
+/* function, so that compilers have a change to inline calls.   */
+
+#define MARPA_AVL_FIND(avl_find_output, in_tree, in_item, cmp_func) do { \
+    /* Input parameters are expressions. */                             \
+    const MARPA_AVL_TREE avl_find_tree = (const MARPA_AVL_TREE) (in_tree); \
+    const void *avl_find_item = (const void *) (in_item);               \
+                                                                        \
+    /* Implementation. */                                               \
+    {                                                                   \
+      short found = 0;                                                  \
+      NODE avl_find_p;                                                  \
+                                                                        \
+      assert (avl_find_tree != NULL && avl_find_item != NULL);          \
+      for (avl_find_p = avl_find_tree->avl_root; avl_find_p != NULL; )  \
+        {                                                               \
+          int cmp = cmp_func(avl_find_item, avl_find_p->avl_data, avl_find_tree->avl_param); \
+                                                                        \
+          if (cmp < 0)                                                  \
+            avl_find_p = avl_find_p->avl_link[0];                       \
+          else if (cmp > 0)                                             \
+            avl_find_p = avl_find_p->avl_link[1];                       \
+          else { /* |cmp == 0| */                                       \
+            avl_find_output = avl_find_p->avl_data;                     \
+            found = 1;                                                  \
+            break;                                                      \
+          }                                                             \
+        }                                                               \
+                                                                        \
+      if (! found) {                                                    \
+        avl_find_output = NULL;                                         \
+      }                                                                 \
+    }                                                                   \
+ } while (0)
+
+#define MARPA_AVL_PROBE(avl_probe_output, in_tree, in_item, cmp_func) do { \
+    /* Input parameters are expressions. */                             \
+    MARPA_AVL_TREE avl_probe_tree = (MARPA_AVL_TREE) (in_tree);         \
+    void *avl_probe_item = (void *) (in_item);                          \
+                                                                        \
+    /* Implementation. */                                               \
+    {                                                                   \
+      NODE y, z; /* Top node to update balance factor, and parent */    \
+      NODE p, q; /* Iterator, and parent. */                            \
+      NODE n;     /* Newly inserted node. */                            \
+      NODE w;     /* New root of rebalanced subtree. */                 \
+      int dir;                /* Direction to descend. */               \
+                                                                        \
+      unsigned char da[MARPA_AVL_MAX_HEIGHT]; /* Cached comparison results. */ \
+      int k = 0;              /* Number of cached results. */           \
+      short found = 0;                                                  \
+                                                                        \
+      assert (avl_probe_tree != NULL && avl_probe_item != NULL);        \
+                                                                        \
+      z = (NODE) &avl_probe_tree->avl_root;                             \
+      y = avl_probe_tree->avl_root;                                     \
+      dir = 0;                                                          \
+      for (q = z, p = y; p != NULL; q = p, p = p->avl_link[dir])        \
+        {                                                               \
+          int cmp = cmp_func(avl_probe_item, p->avl_data, avl_probe_tree->avl_param); \
+          if (cmp == 0) {                                               \
+            avl_probe_output = &p->avl_data;                            \
+            found = 1;                                                  \
+            break;                                                      \
+          }                                                             \
+                                                                        \
+          if (p->avl_balance != 0)                                      \
+            z = q, y = p, k = 0;                                        \
+          dir = cmp > 0;                                                \
+          da[k++] = (unsigned char)dir;                                 \
+        }                                                               \
+                                                                        \
+      if (! found) {                                                    \
+        n = q->avl_link[dir] = marpa_obs_new (avl_probe_tree->avl_obstack, struct marpa_avl_node, 1); \
+                                                                        \
+        avl_probe_tree->avl_count++;                                    \
+        n->avl_data = avl_probe_item;                                   \
+        n->avl_link[0] = n->avl_link[1] = NULL;                         \
+        n->avl_balance = 0;                                             \
+        if (y == NULL) {                                                \
+          avl_probe_output = &n->avl_data;                              \
+        } else {                                                        \
+          for (p = y, k = 0; p != n; p = p->avl_link[da[k]], k++)       \
+            if (da[k] == 0)                                             \
+              p->avl_balance--;                                         \
+            else                                                        \
+              p->avl_balance++;                                         \
+                                                                        \
+          if (y->avl_balance == -2)                                     \
+            {                                                           \
+              NODE x = y->avl_link[0];                                  \
+              if (x->avl_balance == -1)                                 \
+                {                                                       \
+                  w = x;                                                \
+                  y->avl_link[0] = x->avl_link[1];                      \
+                  x->avl_link[1] = y;                                   \
+                  x->avl_balance = y->avl_balance = 0;                  \
+                }                                                       \
+              else                                                      \
+                {                                                       \
+                  assert (x->avl_balance == +1);                        \
+                  w = x->avl_link[1];                                   \
+                  x->avl_link[1] = w->avl_link[0];                      \
+                  w->avl_link[0] = x;                                   \
+                  y->avl_link[0] = w->avl_link[1];                      \
+                  w->avl_link[1] = y;                                   \
+                  if (w->avl_balance == -1)                             \
+                    x->avl_balance = 0, y->avl_balance = +1;            \
+                  else if (w->avl_balance == 0)                         \
+                    x->avl_balance = y->avl_balance = 0;                \
+                  else /* |w->avl_balance == +1| */                     \
+                    x->avl_balance = -1, y->avl_balance = 0;            \
+                  w->avl_balance = 0;                                   \
+                }                                                       \
+            }                                                           \
+          else if (y->avl_balance == +2)                                \
+            {                                                           \
+              NODE x = y->avl_link[1];                                  \
+              if (x->avl_balance == +1)                                 \
+                {                                                       \
+                  w = x;                                                \
+                  y->avl_link[1] = x->avl_link[0];                      \
+                  x->avl_link[0] = y;                                   \
+                  x->avl_balance = y->avl_balance = 0;                  \
+                }                                                       \
+              else                                                      \
+                {                                                       \
+                  assert (x->avl_balance == -1);                        \
+                  w = x->avl_link[0];                                   \
+                  x->avl_link[0] = w->avl_link[1];                      \
+                  w->avl_link[1] = x;                                   \
+                  y->avl_link[1] = w->avl_link[0];                      \
+                  w->avl_link[0] = y;                                   \
+                  if (w->avl_balance == +1)                             \
+                    x->avl_balance = 0, y->avl_balance = -1;            \
+                  else if (w->avl_balance == 0)                         \
+                    x->avl_balance = y->avl_balance = 0;                \
+                  else /* |w->avl_balance == -1| */                     \
+                    x->avl_balance = +1, y->avl_balance = 0;            \
+                  w->avl_balance = 0;                                   \
+                }                                                       \
+            }                                                           \
+          else {                                                        \
+            avl_probe_output =  &n->avl_data;                           \
+            found = 1;                                                  \
+          }                                                             \
+          if (! found) {                                                \
+            z->avl_link[y != z->avl_link[0]] = w;                       \
+                                                                        \
+            avl_probe_tree->avl_generation++;                           \
+            avl_probe_output = &n->avl_data;                            \
+          }                                                             \
+        }                                                               \
+      }                                                                 \
+    }                                                                   \
+  } while (0)
+
+#define MARPA_AVL_INSERT(avl_insert_output, in_table, in_item, cmp_func) do { \
+    /* Input parameters are expressions. */                             \
+    MARPA_AVL_TREE avl_insert_table = (MARPA_AVL_TREE) (in_table);      \
+    void *avl_insert_item = (void *) (in_item);                         \
+                                                                        \
+    /* Implementation. */                                               \
+    {                                                                   \
+      void **avl_insert_p;                                              \
+      MARPA_AVL_PROBE(avl_insert_p, avl_insert_table, avl_insert_item, cmp_func); \
+      avl_insert_output = avl_insert_p == NULL || *avl_insert_p == avl_insert_item ? NULL : *avl_insert_p; \
+    }                                                                   \
+  } while (0)
+
+/* The linkage macros (MARPA_.*LINKAGE) are useful for specifying
+   alternative linkage, usually 'static'.  The intended use case is
+   including the Marpa source in a single file, and redefining
+   the linkage macros on the command line:
+
+-DMARPA_LINKAGE=static -DMARPA_AVL_LINKAGE=static -DMARPA_TAVL_LINKAGE=static -DMARPA_OBS_LINKAGE=static
+
+   However, it is important to note that any redefinition of the linkaage
+   macros is currently experimental, and therefore unsupported.
+*/
 #ifndef MARPA_AVL_LINKAGE
 #  define MARPA_AVL_LINKAGE /* Default linkage */
 #endif
