@@ -64,7 +64,6 @@ _marpa_avl_create (marpa_avl_comparison_func *compare, void *param)
 MARPA_AVL_LINKAGE void *
 _marpa_avl_find (const MARPA_AVL_TREE tree, const void *item)
 {
-#ifndef MARPA_AVL_INLINE
   NODE p;
 
   assert (tree != NULL && item != NULL);
@@ -81,11 +80,6 @@ _marpa_avl_find (const MARPA_AVL_TREE tree, const void *item)
     }
 
   return NULL;
-#else
-  void *output;
-  MARPA_AVL_FIND(output, tree, item, tree->avl_compare);
-  return output;
-#endif
 }
 
 /* Search |tree| for an item matching or after |item|, and return it if found.
@@ -124,7 +118,6 @@ _marpa_avl_at_or_after (const MARPA_AVL_TREE tree, const void *item)
 MARPA_AVL_LINKAGE void **
 _marpa_avl_probe (MARPA_AVL_TREE tree, void *item)
 {
-#ifndef MARPA_AVL_INLINE
   NODE y, z; /* Top node to update balance factor, and parent */
   NODE p, q; /* Iterator, and parent. */
   NODE n;     /* Newly inserted node. */
@@ -226,11 +219,6 @@ _marpa_avl_probe (MARPA_AVL_TREE tree, void *item)
 
   tree->avl_generation++;
   return &n->avl_data;
-#else
-  void **output;
-  MARPA_AVL_PROBE(output, tree, item, tree->avl_compare);
-  return output;
-#endif
 }
 
 /* Inserts |item| into |table|.
@@ -239,14 +227,8 @@ _marpa_avl_probe (MARPA_AVL_TREE tree, void *item)
 MARPA_AVL_LINKAGE void *
 _marpa_avl_insert (MARPA_AVL_TREE table, void *item)
 {
-#ifndef MARPA_AVL_INLINE
   void **p = _marpa_avl_probe (table, item);
   return p == NULL || *p == item ? NULL : *p;
-#else
-  void **output;
-  MARPA_AVL_INSERT(output, table, item, table->avl_compare);
-  return output;
-#endif
 }
 
 /* Inserts |item| into |table|, replacing any duplicate item.
