@@ -20,7 +20,7 @@ http://www.gnu.org/licenses/.
 ## About this page
 
 This is the updates page as of Marpa::R2,
-version 10.000000.
+version 12.000000.
 (For the updates pages for previous versions, see below.)
 It may contain descriptions of bugs for which a fix
 is in preparation.
@@ -38,11 +38,55 @@ of the current functionality in a major way.
 New versions usually occur only when a serious
 bug is discovered.
 
-## Bugs
+## Support
 
-### No known bugs
+Marpa::R2 is free software.
+There is no warranty.
 
-As of this writing, there are no known bugs in Marpa::R2 10.000000.
+Available resources include the following:
+
+* Bugs should be filed as issues in this repo.
+
+* The IRC channel is where most discussion takes place.
+It is `#marpa` at
+`irc.libera.chat`.
+The channel
+[is logged](http://colabti.org/irclogger/irclogger_log/marpa).
+
+* In addition, there is
+[a Google Groups mailing list dedicated to
+Marpa](https://groups.google.com/forum/?fromgroups#!forum/marpa-parser).
+
+* Ron Savage maintains
+[Marpa's official starting
+page](http://savage.net.au/Marpa.html).
+
+* The author also maintains [a less extensive Marpa web
+site](https://jeffreykegler.github.io/Marpa-web-site/).
+
+* After `Marpa::R2` is installed,
+You can read its documentation for this module with the perldoc command:
+`perldoc Marpa::R2`.
+
+## Installation note
+
+On installation, users sometimes run have problems with
+GNU's configure, apparently due to broken setups or bugs
+in GNU's autotools.  The proper fix, of course, is to repair
+the setup or GNU configure, but this may be impossible or
+inconvenient.
+
+A workaround is to set the following environment variable:
+```
+    MARPA_USE_PERL_AUTOCONF=1
+```
+This environment setting will cause the installation to use
+Perl's Config::Autoconf,
+bypassing any problems with the GNU autoconf.
+
+## Known bugs
+
+No known bugs.
 
 ## Notices
 
@@ -63,6 +107,8 @@ A bug with a Perl variant will be rejected
 if the bug cannot be duplicated in standard Perl.
 
 ## Updates pages for previous versions
+
+[Updates page for version 10.000000](https://github.com/jeffreykegler/Marpa--R2/blob/master/etc/old_updates/UPDATES-10.000000.md).
 
 [Updates page for version 8.000000](https://github.com/jeffreykegler/Marpa--R2/blob/master/etc/old_updates/UPDATES-8.000000.md).
 
