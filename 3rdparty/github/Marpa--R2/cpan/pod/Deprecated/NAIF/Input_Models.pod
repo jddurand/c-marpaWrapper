@@ -15,7 +15,13 @@
 
 =head1 NAME
 
-Marpa::R2::Advanced::Models - Other input models
+Marpa::R2::Deprecated::NAIF::Input_Models - Other NAIF input models
+
+=head1 THE NAIF INTERFACE IS DEPRECATED
+
+This document describes the NAIF interface,
+which is deprecated.
+PLEASE DO NOT USE IT FOR NEW DEVELOPMENT.
 
 =head1 About this document
 
@@ -84,7 +90,7 @@ and the end of parsing,
 are somewhat more complicated when alternative
 input models are involved.
 These concepts were explained in L<the main document for
-the recognizer|Marpa::R2::NAIF::Recognizer> on the assumption
+the recognizer|Marpa::R2::Deprecated::NAIF::Recognizer> on the assumption
 that the default input model was in use.
 This document revises those explanations as necessary
 to take into
@@ -292,7 +298,7 @@ In this context,
 an "event" is one of a list of occurrences of special interest during
 the successful completion of an earleme,
 as described for
-the L<recognizer's C<read> method|Marpa::R2::NAIF::Recognizer/"read()">.
+the L<recognizer's C<read> method|Marpa::R2::Deprecated::NAIF::Recognizer/"read()">.
 
 All tokens read using the C<alternative> method start at one
 location -- the current earleme.
@@ -349,7 +355,7 @@ but will have no effect.
 
 A recognizer can mix
 calls to
-its L<C<read>|Marpa::R2::NAIF::Recognizer/"read()">
+its L<C<read>|Marpa::R2::Deprecated::NAIF::Recognizer/"read()">
 method with calls to its L<C<alternative>|/"alternative()">
 method.
 The C<read> method has the same effect as a single call
