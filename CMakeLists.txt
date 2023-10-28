@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.0.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.15.0 FATAL_ERROR)
 PROJECT(marpaWrapper VERSION 1.0.102 LANGUAGES C)
 IF (NOT MYPACKAGEBOOTSTRAP_DONE)
   INCLUDE ("3rdparty/github/cmake-utils/cmake/MyPackageBootstrap.cmake")
@@ -23,6 +23,14 @@ FOREACH (_target ${PROJECT_NAME}_objs ${PROJECT_NAME}_static_objs)
   ENDFOREACH ()
 ENDFOREACH ()
 
+################
+# Dependencies #
+################
+MYPACKAGEDEPENDENCY (genericStack       "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericStack"       LOCAL PUBLIC)         # present in public API
+MYPACKAGEDEPENDENCY (genericLogger      "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericLogger"      LOCAL PUBLIC LIBS)    # present in public API
+MYPACKAGEDEPENDENCY (genericHash        "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericHash"        LOCAL STATIC PRIVATE) # not present in public API
+MYPACKAGEDEPENDENCY (genericSparseArray "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericSparseArray" LOCAL STATIC PRIVATE) # not present in public API
+
 ###############
 # Executables #
 ###############
@@ -30,14 +38,6 @@ MYPACKAGETESTEXECUTABLE(marpaWrapperTester             test/marpaWrapperTester.c
 MYPACKAGETESTEXECUTABLE(marpaWrapperAsfTester          test/marpaWrapperAsfTester.c)
 MYPACKAGETESTEXECUTABLE(marpaWrapperAsfValueTester     test/marpaWrapperAsfValueTester.c)
 MYPACKAGETESTEXECUTABLE(marpaWrapperAsfAmbiguousTester test/marpaWrapperAsfAmbiguousTester.c)
-
-################
-# Dependencies #
-################
-MYPACKAGEDEPENDENCY (genericStack       "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericStack" LIBS LOCAL)              # present in public API
-MYPACKAGEDEPENDENCY (genericLogger      "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericLogger" LIBS LOCAL)             # present in public API
-MYPACKAGEDEPENDENCY (genericHash        "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericHash" LIBS LOCAL STATIC)        # not present in public API
-MYPACKAGEDEPENDENCY (genericSparseArray "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericSparseArray" LIBS LOCAL STATIC) # not present in public API
 
 #########
 # Tests #
