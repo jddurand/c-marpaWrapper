@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 3.15.0 FATAL_ERROR)
-PROJECT(genericSparseArray VERSION 1.0.50 LANGUAGES C)
+PROJECT(genericSparseArray VERSION 1.0.52 LANGUAGES C)
 IF (NOT MYPACKAGEBOOTSTRAP_DONE)
   INCLUDE ("3rdparty/github/cmake-utils/cmake/MyPackageBootstrap.cmake")
 ENDIF ()
@@ -14,7 +14,7 @@ MYPACKAGETESTEXECUTABLE(genericSparseArrayTester test/genericSparseArray.c)
 # Dependencies #
 ################
 MYPACKAGEDEPENDENCY (genericHash   "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericHash" LOCAL)
-MYPACKAGEDEPENDENCY (genericLogger "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericLogger" TESTS STATIC LOCAL)
+MYPACKAGEDEPENDENCY (genericLogger "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericLogger" TESTS LOCAL)
 
 #########
 # Tests #
