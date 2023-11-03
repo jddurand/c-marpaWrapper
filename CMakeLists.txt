@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.15.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.26.0 FATAL_ERROR)
 PROJECT(marpaWrapper VERSION 1.0.103 LANGUAGES C)
 IF (NOT MYPACKAGEBOOTSTRAP_DONE)
   INCLUDE ("3rdparty/github/cmake-utils/cmake/MyPackageBootstrap.cmake")
@@ -16,7 +16,7 @@ MYPACKAGELIBRARY(
 #
 # Because of Marpa, the cmake framework does not know about it
 #
-FOREACH (_target ${PROJECT_NAME}_objs ${PROJECT_NAME}_static_objs)
+FOREACH (_target ${PROJECT_NAME}_shared ${PROJECT_NAME}_static)
   TARGET_INCLUDE_DIRECTORIES(${_target} PRIVATE libmarpa/work/stage)
   FOREACH (_type MAJOR MICRO MINOR)
     TARGET_COMPILE_DEFINITIONS(${_target} PRIVATE -DMARPA_LIB_${_type}_VERSION=MARPA_${_type}_VERSION)
@@ -26,10 +26,10 @@ ENDFOREACH ()
 ################
 # Dependencies #
 ################
-MYPACKAGEDEPENDENCY (genericStack       "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericStack"       LOCAL PUBLIC)         # present in public API
-MYPACKAGEDEPENDENCY (genericLogger      "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericLogger"      LOCAL PUBLIC LIBS)    # present in public API
-MYPACKAGEDEPENDENCY (genericHash        "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericHash"        LOCAL STATIC PRIVATE) # not present in public API
-MYPACKAGEDEPENDENCY (genericSparseArray "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericSparseArray" LOCAL STATIC PRIVATE) # not present in public API
+MYPACKAGEDEPENDENCY (genericStack       "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericStack"       LOCAL IFACE  PUBLIC  IFACE_OBJECTS) # present in public API
+MYPACKAGEDEPENDENCY (genericLogger      "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericLogger"      LOCAL LIBS   PUBLIC  SHARED_LIB)    # present in public API
+MYPACKAGEDEPENDENCY (genericHash        "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericHash"        LOCAL LIBS   PRIVATE IFACE_OBJECTS) # not present in public API
+MYPACKAGEDEPENDENCY (genericSparseArray "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/github/genericSparseArray" LOCAL LIBS   PRIVATE IFACE_OBJECTS) # not present in public API
 
 ###############
 # Executables #
