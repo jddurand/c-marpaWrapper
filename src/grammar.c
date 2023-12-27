@@ -4,7 +4,7 @@
 #include <errno.h>
 
 #include "marpa.h"
-#include "config.h"
+#include "marpaWrapper/internal/config.h"
 #include "marpaWrapper/internal/_manageBuf.h"
 #include "marpaWrapper/internal/_logging.h"
 #include "marpaWrapper/internal/_grammar.h"

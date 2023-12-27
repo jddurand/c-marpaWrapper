@@ -4,7 +4,7 @@
 #include <errno.h>
 
 #include "marpa.h"
-#include "config.h"
+#include "marpaWrapper/internal/config.h"
 #include "marpaWrapper/internal/_value.h"
 #include "marpaWrapper/internal/_recognizer.h"
 #include "marpaWrapper/internal/_grammar.h"
