@@ -34,18 +34,56 @@ FetchContent_MakeAvailable(cmake-helpers)
 #
 # Dependencies
 #
-cmake_helpers_depend(genericStack       EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY https://github.com/jddurand/c-genericStack.git       GIT_SHALLOW TRUE FIND_PACKAGE_ARGS REQUIRED CONFIG)
-cmake_helpers_depend(genericLogger      EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY https://github.com/jddurand/c-genericLogger.git      GIT_SHALLOW TRUE FIND_PACKAGE_ARGS REQUIRED CONFIG)
-cmake_helpers_depend(genericHash        EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY https://github.com/jddurand/c-genericHash.git        GIT_SHALLOW TRUE FIND_PACKAGE_ARGS REQUIRED CONFIG)
-cmake_helpers_depend(genericSparseArray EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY https://github.com/jddurand/c-genericSparseArray.git GIT_SHALLOW TRUE FIND_PACKAGE_ARGS REQUIRED CONFIG)
+set(marpaWrapper_depends)
+set(marpaWrapper_find_dependencies)
+#
+# genericStack dependency
+#
+set(genericStack_url https://github.com/jddurand/c-genericStack.git)
+cmake_helpers_depend(genericStack
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericStack_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
+)
+list(APPEND marpaWrapper_find_dependencies "genericStack REQUIRED CONFIG")
+list(APPEND marpaWrapper_depends genericStack::genericStack)
+#
+# genericLogger dependency
+#
+set(genericLogger_url https://github.com/jddurand/c-genericLogger.git)
+cmake_helpers_depend(genericLogger
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericLogger_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
+)
+list(APPEND marpaWrapper_find_dependencies "genericLogger REQUIRED CONFIG")
+list(APPEND marpaWrapper_depends genericLogger::genericLogger)
+#
+# genericHash dependency
+#
+set(genericHash_url https://github.com/jddurand/c-genericHash.git)
+cmake_helpers_depend(genericHash
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericHash_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
+)
+list(APPEND marpaWrapper_find_dependencies "genericHash REQUIRED CONFIG")
+list(APPEND marpaWrapper_depends genericHash::genericHash)
+#
+# genericSparseArray dependency
+#
+set(genericSparseArray_url https://github.com/jddurand/c-genericSparseArray.git)
+cmake_helpers_depend(genericSparseArray
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericSparseArray_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
+)
+list(APPEND marpaWrapper_find_dependencies "genericSparseArray REQUIRED CONFIG")
+list(APPEND marpaWrapper_depends genericSparseArray::genericSparseArray)
 #
 # Create library
 #
 cmake_helpers_library(marpaWrapper
   CONFIG_ARGS                    include/marpaWrapper/internal/config.h.in include/marpaWrapper/internal/config.h
   SOURCES_BASE_DIRS              ${CMAKE_CURRENT_SOURCE_DIR}/amalgamation
-  FIND_DEPENDENCIES              "genericStack REQUIRED CONFIG" "genericLogger REQUIRED CONFIG" "genericHash REQUIRED CONFIG" "genericSparseArray REQUIRED CONFIG" 
-  DEPENDS                        genericStack::genericStack genericLogger::genericLogger genericHash::genericHash genericSparseArray::genericSparseArray
+  FIND_DEPENDENCIES              ${marpaWrapper_find_dependencies}
+  DEPENDS                        ${marpaWrapper_depends}
   TARGETS_OUTVAR                 targets
 )
 #
