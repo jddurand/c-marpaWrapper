@@ -37,6 +37,7 @@ FetchContent_MakeAvailable(cmake-helpers)
 set(marpaWrapper_depends)
 set(marpaWrapper_depends_ext)
 set(marpaWrapper_find_dependencies)
+set(marpaWrapper_extra_licenses)
 #
 # genericStack: public dependency
 #
@@ -73,9 +74,15 @@ cmake_helpers_depend(genericHash
     GIT_SHALLOW TRUE
   FIND_PACKAGE_ARGS
     REQUIRED CONFIG
+  ALWAYS_GET_SOURCES TRUE
   MAKEAVAILABLE FALSE
+  CONFIGURE FALSE
+  BUILD FALSE
+  INSTALL FALSE
+  SOURCE_DIR_OUTVAR genericHash_source_dir
 )
 list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericHash::genericHash)
+list(APPEND marpaWrapper_extra_licenses genericHash ${genericHash_source_dir}/LICENSE)
 #
 # genericSparseArray dependency: internal dependency
 #
@@ -86,9 +93,15 @@ cmake_helpers_depend(genericSparseArray
     GIT_SHALLOW TRUE
   FIND_PACKAGE_ARGS
     REQUIRED CONFIG
+  ALWAYS_GET_SOURCES TRUE
   MAKEAVAILABLE FALSE
+  CONFIGURE FALSE
+  BUILD FALSE
+  INSTALL FALSE
+  SOURCE_DIR_OUTVAR genericSparseArray_source_dir
 )
 list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericSparseArray::genericSparseArray)
+list(APPEND marpaWrapper_extra_licenses genericSparseArray ${genericSparseArray_source_dir}/LICENSE)
 #
 # Create library
 #
@@ -100,6 +113,7 @@ cmake_helpers_library(marpaWrapper
   DEPENDS_EXT                    ${marpaWrapper_depends_ext}
   TARGETS_OUTVAR                 targets
 )
+list(APPEND marpaWrapper_extra_licenses libmarpa ${CMAKE_CURRENT_SOURCE_DIR}/libmarpa/LICENSE)
 #
 # CMake framework does not know about it
 #
@@ -121,4 +135,6 @@ cmake_helpers_exe(marpaWrapperAsfAmbiguousTester SOURCES test/marpaWrapperAsfAmb
 #
 # Package
 #
-cmake_helpers_package()
+cmake_helpers_package(
+  EXTRA_LICENSES ${marpaWrapper_extra_licenses}
+)
