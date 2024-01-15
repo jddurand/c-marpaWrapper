@@ -76,9 +76,6 @@ cmake_helpers_depend(genericHash
     REQUIRED CONFIG
   ALWAYS_GET_SOURCES TRUE
   MAKEAVAILABLE FALSE
-  CONFIGURE FALSE
-  BUILD FALSE
-  INSTALL FALSE
   SOURCE_DIR_OUTVAR genericHash_source_dir
 )
 list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericHash::genericHash)
@@ -95,9 +92,6 @@ cmake_helpers_depend(genericSparseArray
     REQUIRED CONFIG
   ALWAYS_GET_SOURCES TRUE
   MAKEAVAILABLE FALSE
-  CONFIGURE FALSE
-  BUILD FALSE
-  INSTALL FALSE
   SOURCE_DIR_OUTVAR genericSparseArray_source_dir
 )
 list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericSparseArray::genericSparseArray)
