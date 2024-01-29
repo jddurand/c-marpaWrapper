@@ -26,12 +26,10 @@
 cmake_minimum_required(VERSION 3.26.0 FATAL_ERROR)
 project(marpaWrapper VERSION 1.0.105 LANGUAGES C)
 #
-# Specific options via environment variables
+# Specific options
 #
-set(MARPAWRAPPER_PREFER_STATIC_DEPENDENCIES $ENV{CMAKE_HELPERS_PREFER_STATIC_DEPENDENCIES})
-set(MARPAWRAPPER_PREFER_OBJECT_INTERFACES   $ENV{CMAKE_HELPERS_PREFER_OBJECT_INTERFACES})
-message(STATUS "Prefer static dependencies: ${MARPAWRAPPER_PREFER_STATIC_DEPENDENCIES}")
-message(STATUS "Prefer object dependencies: ${MARPAWRAPPER_PREFER_OBJECT_INTERFACES}")
+option(PREFER_STATIC_DEPENDENCIES "Prefer static dependencies" OFF)
+message(STATUS "Prefer static dependencies: ${PREFER_STATIC_DEPENDENCIES}")
 #
 # Get library helper
 #
@@ -62,41 +60,15 @@ list(APPEND marpaWrapper_depends PUBLIC genericStack::genericStack)
 # genericLogger: public dependency
 #
 set(genericLogger_url https://github.com/jddurand/c-genericLogger.git)
-if(MARPAWRAPPER_PREFER_OBJECT_INTERFACES)
-  cmake_helpers_depend(genericLogger
-    EXTERNALPROJECT_ADD_ARGS
-      GIT_REPOSITORY ${genericLogger_url}
-      GIT_SHALLOW TRUE
-    FIND FALSE
-    CONFIGURE FALSE
-    BUILD FALSE
-    INSTALL FALSE
-    MAKEAVAILABLE TRUE
-    EXCLUDE_FROM_ALL TRUE
-    SOURCE_DIR_OUTVAR genericLogger_source_dir
-  )
-  list(APPEND marpaWrapper_extra_licenses genericLogger ${genericLogger_source_dir}/LICENSE)
-  if(MARPAWRAPPER_PREFER_STATIC_DEPENDENCIES)
-    list(APPEND marpaWrapper_depends_ext PUBLIC BUILD_LOCAL_INTERFACE $<COMPILE_ONLY:genericLogger_static_objs_iface>)
-    list(APPEND marpaWrapper_depends PRIVATE $<LINK_ONLY:genericLogger_static_objs_iface>)
-  else()
-    list(APPEND marpaWrapper_depends_ext PUBLIC BUILD_LOCAL_INTERFACE $<COMPILE_ONLY:genericLogger_objs_iface>)
-    list(APPEND marpaWrapper_depends PRIVATE $<LINK_ONLY:genericLogger_objs_iface>)
-  endif()
+cmake_helpers_depend(genericLogger
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericLogger_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
+)
+list(APPEND marpaWrapper_find_dependencies "genericLogger REQUIRED CONFIG")
+if(PREFER_STATIC_DEPENDENCIES)
+  list(APPEND marpaWrapper_depends PUBLIC genericLogger::genericLogger_static)
 else()
-  cmake_helpers_depend(genericLogger
-    EXTERNALPROJECT_ADD_ARGS
-      GIT_REPOSITORY ${genericLogger_url}
-      GIT_SHALLOW TRUE
-    FIND_PACKAGE_ARGS
-      REQUIRED CONFIG
-  )
-  list(APPEND marpaWrapper_find_dependencies "genericLogger REQUIRED CONFIG")
-  if(MARPAWRAPPER_PREFER_STATIC_DEPENDENCIES)
-    list(APPEND marpaWrapper_depends PUBLIC genericLogger::genericLogger_static)
-  else()
-    list(APPEND marpaWrapper_depends PUBLIC genericLogger::genericLogger)
-  endif()
+  list(APPEND marpaWrapper_depends PUBLIC genericLogger::genericLogger)
 endif()
 #
 # genericHash dependency: internal dependency
