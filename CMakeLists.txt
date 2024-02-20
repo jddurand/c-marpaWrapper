@@ -24,7 +24,7 @@
 # Local tests done with: cmake -S c-marpaWrapper -B c-marpaWrapper-build -DCMAKE_HELPERS_DEBUG=OFF -DICU_ROOT=C:\icu4c-74_2-Win64-MSVC2019
 #
 cmake_minimum_required(VERSION 3.26.0 FATAL_ERROR)
-project(marpaWrapper VERSION 1.0.105 LANGUAGES C)
+project(marpaWrapper VERSION 1.0.106 LANGUAGES C)
 #
 # Specific options
 #
