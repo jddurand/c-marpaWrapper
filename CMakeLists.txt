@@ -52,11 +52,8 @@ set(marpaWrapper_extra_licenses)
 #
 set(genericStack_url https://github.com/jddurand/c-genericStack.git)
 cmake_helpers_depend(genericStack
-  EXTERNALPROJECT_ADD_ARGS
-    GIT_REPOSITORY ${genericStack_url}
-    GIT_SHALLOW TRUE
-  FIND_PACKAGE_ARGS
-    REQUIRED CONFIG
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericStack_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
 )
 list(APPEND marpaWrapper_find_dependencies "genericStack REQUIRED CONFIG")
 list(APPEND marpaWrapper_depends PUBLIC genericStack::genericStack)
@@ -75,37 +72,23 @@ else()
   list(APPEND marpaWrapper_depends PUBLIC genericLogger::genericLogger)
 endif()
 #
-# genericHash dependency: internal dependency
+# genericHash dependency: private interface dependency
 #
 set(genericHash_url https://github.com/jddurand/c-genericHash.git)
 cmake_helpers_depend(genericHash
-  EXTERNALPROJECT_ADD_ARGS
-    GIT_REPOSITORY ${genericHash_url}
-    GIT_SHALLOW TRUE
-  FIND_PACKAGE_ARGS
-    REQUIRED CONFIG
-  ALWAYS_GET_SOURCES TRUE
-  MAKEAVAILABLE FALSE
-  SOURCE_DIR_OUTVAR genericHash_source_dir
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericHash_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG
 )
-list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericHash::genericHash)
-list(APPEND marpaWrapper_extra_licenses genericHash ${genericHash_source_dir}/LICENSE)
+list(APPEND marpaWrapper_depends PRIVATE genericHash::genericHash)
 #
-# genericSparseArray dependency: internal dependency
+# genericSparseArray dependency: private interface dependency
 #
 set(genericSparseArray_url https://github.com/jddurand/c-genericSparseArray.git)
 cmake_helpers_depend(genericSparseArray
-  EXTERNALPROJECT_ADD_ARGS
-    GIT_REPOSITORY ${genericSparseArray_url}
-    GIT_SHALLOW TRUE
-  FIND_PACKAGE_ARGS
-    REQUIRED CONFIG
-  ALWAYS_GET_SOURCES TRUE
-  MAKEAVAILABLE FALSE
-  SOURCE_DIR_OUTVAR genericSparseArray_source_dir
+  EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericSparseArray_url} GIT_SHALLOW TRUE
+  FIND_PACKAGE_ARGS REQUIRED CONFIG ALWAYS_GET_SOURCES TRUE
 )
-list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericSparseArray::genericSparseArray)
-list(APPEND marpaWrapper_extra_licenses genericSparseArray ${genericSparseArray_source_dir}/LICENSE)
+list(APPEND marpaWrapper_depends PRIVATE genericSparseArray::genericSparseArray)
 #
 # Create library
 #
