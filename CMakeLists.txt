@@ -88,7 +88,8 @@ cmake_helpers_depend(genericSparseArray
   EXTERNALPROJECT_ADD_ARGS GIT_REPOSITORY ${genericSparseArray_url} GIT_SHALLOW TRUE
   FIND_PACKAGE_ARGS REQUIRED CONFIG ALWAYS_GET_SOURCES TRUE
 )
-list(APPEND marpaWrapper_depends PRIVATE genericSparseArray::genericSparseArray)
+list(APPEND marpaWrapper_depends_ext PRIVATE BUILD_LOCAL_INTERFACE genericSparseArray::genericSparseArray)
+list(APPEND marpaWrapper_extra_licenses genericSparseArray ${genericSparseArray_source_dir}/LICENSE)
 #
 # Create library
 #
